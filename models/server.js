@@ -6,6 +6,8 @@ const cors = require('cors');
 //https://www.npmjs.com/package/cors
 //npm i cors
 
+const { dbConnection } = require('../database/config');
+
 
 class Server {
 
@@ -14,12 +16,18 @@ class Server {
         this.port = process.env.PORT;
         this.usersRoutePath = '/api/users';
 
+        // Conectar a base de datos
+        this.conectarDB();
+
         // Middlewares (funciones que añaden funcionalidades)
         this.middlewares();
 
-
         // Rutas de mi app
         this.routes();
+    }
+
+    async conectarDB() {
+        await dbConnection();
     }
 
     middlewares() {
