@@ -3,14 +3,16 @@ const mongoose = require('mongoose');
 // npm i mongoose
 
 
+
 const dbConnection = async() => {
 
     try {
+        mongoose.set('strictQuery', true); //agregado por error al ejecutar
         mongoose.connect( process.env.MONGODB_CNN, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            useCreateIndex: true,
-            useFindAndModify: false
+            //useCreateIndex: true,
+            //useFindAndModify: false
         });
 
         console.log('Base de datos Online')
