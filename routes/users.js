@@ -1,9 +1,13 @@
 const { Router } = require('express');
 const { check } = require('express-validator');//https://www.npmjs.com/package/express-validator
 const { validateFields } = require('../middlewares/validate-fields');
+const { validateJWT } = require('../middlewares/validate-jwt');
+const { isAdminRole } = require('../middlewares/validate-roles');
+
 const { isValidRole, emailExists, existsUserById } = require('../helpers/db-validators');
 
-const { usersGet, usersPost, usersPut, usersDelete, usersPatch } = require('../controllers/users');
+const { usersGet, usersPost, usersPut, usersDelete } = require('../controllers/users');
+
 
 const router = Router();
 
@@ -40,9 +44,9 @@ router.put('/:id',[
     validateFields 
 ], usersPut );
 
-router.patch( '/', usersPatch );
-
 router.delete( '/:id',[
+    validateJWT,
+    //isAdminRole,
     check('id', 'No es un ID válido').isMongoId(),
     check('id').custom( existsUserById ),
     validateFields 
